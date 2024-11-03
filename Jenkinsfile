@@ -26,8 +26,7 @@ pipeline {
             }
             steps { 
                 sh 'ls -l'
-                sh 'mkdir -p .cache'
-                sh 'trivy fs . --format table -o fs.html'
+                sh 'trivy fs . --cache-dir /tmp/trivy-cache --format table -o fs.html'
             }
         }
         stage('Deploy') {
