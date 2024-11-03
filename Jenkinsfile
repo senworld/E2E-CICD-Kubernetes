@@ -59,7 +59,8 @@ pipeline {
             }
             steps {
                 withMaven(globalMavenSettingsConfig: 'maven-settings', jdk: 'jdk', maven: 'maven', mavenSettingsConfig: '', traceability: true) {
-                    sh "mvn deploy"
+                    sh 'cat ~/.m2/settings.xml' 
+                    // sh "mvn deploy"
                 }
             }
         }
