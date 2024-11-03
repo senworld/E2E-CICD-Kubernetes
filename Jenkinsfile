@@ -10,7 +10,6 @@ pipeline {
             }
             steps {
                 sh 'mvn compile'
-                stash includes: './target/*.jar', name: 'compiled-artifact'
             }
         }
         stage('Test') {
@@ -20,8 +19,6 @@ pipeline {
                 }
             }
             steps {
-                unstash 'compiled-artifact'
-                echo 'Testing...'
                 sh 'ls -l target/*.jar'
             }
         }
