@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             agent {
                 docker {
-                    image 'maven:3.8.1'
+                    image 'maven:3.8.1-openjdk-17'
                 }
             }
             steps {
