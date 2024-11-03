@@ -48,6 +48,12 @@ pipeline {
                 }
             }
         }
+        stage('Docker Build & Upload') {
+            steps{
+                sh 'docker build -t twitter-app:latest'
+                sh 'docker push http://192.168.1.17:8081/repository/docker-repo/twitter-app:latest'
+            }
+        }
     }
     post { 
         always { 
