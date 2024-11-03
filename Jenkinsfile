@@ -48,10 +48,26 @@ pipeline {
                 }
             }
         }
-        stage('Docker Build & Upload') {
+        stage('Docker Build') {
             steps{
-                sh 'docker build -t twitter-app:latest .'
-                sh 'docker push http://192.168.1.17:8081/repository/docker-repo/twitter-app:latest'
+                sh 'docker build -t 192.168.1.17:8083/repository/docker-repo/twitter-app:latest .'
+            }
+        }
+        stage('Trivy Scan FS') {
+            agent {
+                docker {
+                    image 'aquasec/trivy:latest'
+                    args '--entrypoint="" -v /var/run/docker.sock:/var/run/docker.sock'
+                    reuseNode true
+                }
+            }
+            steps { 
+                sh "trivy image --format table -o image.html 192.168.1.17:8083/repository/docker-repo/twitter-app:latest"
+            }
+        }
+        stage('Docker Upload') {
+            steps{
+                sh 'docker push 192.168.1.17:8081/repository/docker-repo/twitter-app:latest'
             }
         }
     }
