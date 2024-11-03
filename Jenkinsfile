@@ -1,5 +1,5 @@
 pipeline {
-    agent {"self-hosted"}
+    agent { label 'self-hosted' }
 
     stages {
         stage('Build') {
