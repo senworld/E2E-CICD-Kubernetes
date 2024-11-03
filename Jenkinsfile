@@ -55,6 +55,7 @@ pipeline {
         stage('Publish Artifacts') {
             steps {
                 withMaven(globalMavenSettingsConfig: 'maven-settings', jdk: 'jdk', maven: 'maven', mavenSettingsConfig: '', traceability: true) {
+                    sh 'sleep 120'
                     sh "mvn deploy"
                 }
             }
