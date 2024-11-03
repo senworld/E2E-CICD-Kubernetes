@@ -9,22 +9,25 @@ pipeline {
                 }
             }
             steps {
-                echo 'Building...'
+                sh 'mvnw compile'
+                stash includes: './target/*.jar', name: 'compiled-artifact'
             }
         }
         stage('Test') {
             agent {
                 docker {
-                    image 'openjdk:11'
+                    image 'aquasec/trivy:latest'
                 }
             }
             steps {
+                unstash 'compiled-artifact'
                 echo 'Testing...'
+                sh 'ls -l target/*.jar'
             }
         }
         stage('Deploy') {
             steps {
-                echo "Deploying to ${params.TARGET_ENV} environment"
+                echo "Deploying to environment"
             }
         }
     }
