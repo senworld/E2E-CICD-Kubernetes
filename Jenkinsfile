@@ -20,7 +20,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'ls -l target/*.jar'
+                sh 'ls -l'
                 sh 'trivy'
             }
         }
