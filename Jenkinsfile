@@ -7,7 +7,7 @@ pipeline {
                 cleanWs()
             }
         }
-        stage('Build') {
+        stage('Compile') {
             agent {
                 docker {
                     image 'maven:3.8.1-openjdk-17'
@@ -17,7 +17,7 @@ pipeline {
                 sh 'mvn compile'
             }
         }
-        stage('Test') {
+        stage('Trivy Scan FS') {
             agent {
                 docker {
                     image 'aquasec/trivy:latest'
@@ -27,6 +27,14 @@ pipeline {
             steps { 
                 sh 'ls -l'
                 sh 'trivy fs . --cache-dir /tmp/trivy-cache --format table -o fs.html'
+            }
+        }
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('sonarqubeServer') {
+                    sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Blogging-app -Dsonar.projectKey=Blogging-app \
+                          -Dsonar.java.binaries=target'''
+                }
             }
         }
         stage('Deploy') {
