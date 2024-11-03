@@ -9,6 +9,7 @@ pipeline {
                 }
             }
             steps {
+                sh 'chmod +x mvnw'
                 sh './mvnw compile'
                 stash includes: './target/*.jar', name: 'compiled-artifact'
             }
