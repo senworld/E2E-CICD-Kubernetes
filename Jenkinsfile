@@ -9,7 +9,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'mvnw compile'
+                sh './mvnw compile'
                 stash includes: './target/*.jar', name: 'compiled-artifact'
             }
         }
