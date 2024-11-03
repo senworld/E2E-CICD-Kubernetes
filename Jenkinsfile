@@ -69,7 +69,7 @@ pipeline {
                 }
             }
             steps { 
-                sh "trivy image --cache-dir --format table -o image.html 192.168.1.17:8083/repository/docker-repo/twitter-app:latest"
+                sh "trivy image --cache-dir /tmp/trivy-cache --format table -o image.html 192.168.1.17:8083/repository/docker-repo/twitter-app:latest"
             }
         }
 
