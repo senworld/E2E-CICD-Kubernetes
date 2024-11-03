@@ -24,9 +24,9 @@ pipeline {
                     args '--entrypoint=""'
                 }
             }
-            steps {
+            steps { 
                 sh 'ls -l'
-                sh 'mkdir -p /tmp/trivy-cache'
+                sh 'mkdir -p .cache'
                 sh 'trivy fs . --format table -o fs.html'
             }
         }
