@@ -5,6 +5,11 @@ pipeline {
         SCANNER_HOME = tool 'sonarqube-scanner'
     }
 
+    tools {
+        jdk "jdk"
+        maven 'maven'
+    }
+
     stages {
         stage('Clean Workspace') {
             steps {
