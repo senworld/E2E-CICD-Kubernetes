@@ -26,6 +26,7 @@ pipeline {
             }
             steps {
                 sh 'ls -l'
+                sh 'mkdir -p /tmp/trivy-cache'
                 sh 'trivy fs . --format table -o fs.html'
             }
         }
