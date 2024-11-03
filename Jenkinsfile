@@ -26,7 +26,7 @@ pipeline {
             }
             steps {
                 sh 'ls -l'
-                sh 'trivy'
+                sh 'trivy fs . --format table -o fs.html'
             }
         }
         stage('Deploy') {
