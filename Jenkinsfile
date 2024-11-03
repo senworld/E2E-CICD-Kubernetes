@@ -19,6 +19,7 @@ pipeline {
             agent {
                 docker {
                     image 'maven:3.8.1-openjdk-17'
+                    reuseNode true
                 }
             }
             steps {
@@ -49,6 +50,7 @@ pipeline {
             agent {
                 docker {
                     image 'maven:3.8.1-openjdk-17'
+                    reuseNode true
                 }
             }
             steps {
@@ -58,7 +60,6 @@ pipeline {
         stage('Publish Artifacts') {
             steps {
                 withMaven(globalMavenSettingsConfig: 'maven-settings', jdk: 'jdk', maven: 'maven', mavenSettingsConfig: '', traceability: true) {
-                    sh "cd /jenkins/workspace/E2E-CICD-Kubernetes@2"
                     sh "mvn deploy"
                 }
             }
