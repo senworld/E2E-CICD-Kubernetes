@@ -42,12 +42,6 @@ pipeline {
         //     }
         // }
         stage('Build') {
-            agent {
-                docker {
-                    image 'maven:3.8.1-openjdk-17'
-                    reuseNode true
-                }
-            }
             steps {
                 sh 'mvn package'
             }
@@ -55,7 +49,6 @@ pipeline {
         stage('Publish Artifacts') {
             steps {
                 withMaven(globalMavenSettingsConfig: 'maven-settings', jdk: 'jdk', maven: 'maven', mavenSettingsConfig: '', traceability: true) {
-                    sh 'sleep 120'
                     sh "mvn deploy"
                 }
             }
