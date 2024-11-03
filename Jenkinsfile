@@ -10,11 +10,6 @@ pipeline {
     }
 
     stages {
-        stage('Clean Workspace') {
-            steps {
-                cleanWs()
-            }
-        }
         stage('Compile') {
             agent {
                 docker {
@@ -63,6 +58,11 @@ pipeline {
                     sh "mvn deploy"
                 }
             }
+        }
+    }
+    post { 
+        always { 
+            cleanWs()
         }
     }
 }   
