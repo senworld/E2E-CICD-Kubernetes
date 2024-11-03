@@ -11,36 +11,31 @@ pipeline {
 
     stages {
         stage('Compile') {
-            agent {
-                docker {
-                    image 'maven:3.8.1-openjdk-17'
-                    reuseNode true
-                }
-            }
             steps {
                 sh 'mvn compile'
             }
         }
-        // stage('Trivy Scan FS') {
-        //     agent {
-        //         docker {
-        //             image 'aquasec/trivy:latest'
-        //             args '--entrypoint=""'
-        //         }
-        //     }
-        //     steps { 
-        //         sh 'ls -l'
-        //         sh 'trivy fs . --cache-dir /tmp/trivy-cache --format table -o fs.html'
-        //     }
-        // }
-        // stage('SonarQube Analysis') {
-        //     steps {
-        //         withSonarQubeEnv('sonarqubeserver') {
-        //             sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Blogging-app -Dsonar.projectKey=Blogging-app \
-        //                   -Dsonar.java.binaries=target'''
-        //         }
-        //     }
-        // }
+        stage('Trivy Scan FS') {
+            agent {
+                docker {
+                    image 'aquasec/trivy:latest'
+                    args '--entrypoint=""'
+                    reuseNode true
+                }
+            }
+            steps { 
+                sh 'ls -l'
+                sh 'trivy fs . --cache-dir /tmp/trivy-cache --format table -o fs.html'
+            }
+        }
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('sonarqubeserver') {
+                    sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Blogging-app -Dsonar.projectKey=Blogging-app \
+                          -Dsonar.java.binaries=target'''
+                }
+            }
+        }
         stage('Build') {
             steps {
                 sh 'mvn package'
