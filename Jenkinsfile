@@ -17,6 +17,7 @@ pipeline {
                 docker {
                     image 'openjdk:11'
                 }
+            }
             steps {
                 echo 'Testing...'
             }
