@@ -41,9 +41,25 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
+        stage('Build') {
+            agent {
+                docker {
+                    image 'maven:3.8.1-openjdk-17'
+                }
+            }
             steps {
-                echo "Deploying to environment"
+                sh 'mvn package'
+            }
+        }
+        stage('Publish Artifacts') {
+            agent {
+                docker {
+                    image 'maven:3.8.1-openjdk-17'
+                }
+            steps {
+                withMaven(globalMavenSettingsConfig: 'maven-settings', jdk: 'jdk', maven: 'maven', mavenSettingsConfig: '', traceability: true) {
+                        sh "mvn deploy"
+                }
             }
         }
     }
