@@ -21,6 +21,7 @@ pipeline {
             }
             steps {
                 sh 'ls -l target/*.jar'
+                sh 'trivy'
             }
         }
         stage('Deploy') {
