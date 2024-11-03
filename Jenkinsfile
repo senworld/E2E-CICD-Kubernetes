@@ -75,7 +75,7 @@ pipeline {
 
         stage('Docker Upload') {
             steps{
-                sh 'docker push 192.168.1.17:8081/repository/docker-repo/twitter-app:latest'
+                sh 'docker push 192.168.1.17:8083/repository/docker-repo/twitter-app:latest'
             }
         }
     }
