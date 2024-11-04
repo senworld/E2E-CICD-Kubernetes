@@ -14,7 +14,7 @@ pipeline {
 
         stage('Compile') {
             steps {
-                sh "sed -i '0,/<version>/{s|<version>.*</version>|<version>${BUILD_VERSION}</version>|}' pom.xml"
+                sh "sed -i '0,/<artifactId>twitter-app<\\/artifactId>/{n; s/<version>.*<\\/version>/<version>${BUILD_VERSION}<\\/version>/}' pom.xml"
                 sh 'mvn compile'
             }
         }
