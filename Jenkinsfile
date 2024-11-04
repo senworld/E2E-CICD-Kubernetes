@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         SCANNER_HOME = tool 'sonarqube-scanner'
+        BUILD_VERSION = "${BUILD_NUMBER.toInteger() / 10}"
     }
 
     tools {
@@ -13,6 +14,7 @@ pipeline {
 
         stage('Compile') {
             steps {
+                sh "sed -i 's|<version>.*</version>|<version>${BUILD_VERSION}</version>|' pom.xml"
                 sh 'mvn compile'
             }
         }
@@ -56,7 +58,7 @@ pipeline {
 
         stage('Docker Build') {
             steps{
-                sh 'docker build -t 192.168.1.17:8083/repository/docker-repo/twitter-app:latest .'
+                sh "docker build -t 192.168.1.17:8083/repository/docker-repo/twitter-app:${BUILD_VERSION} ."
             }
         }
 
@@ -69,13 +71,13 @@ pipeline {
                 }
             }
             steps { 
-                sh "trivy image --cache-dir /tmp/trivy-cache --format table -o image.html 192.168.1.17:8083/repository/docker-repo/twitter-app:latest"
+                sh "trivy image --cache-dir /tmp/trivy-cache --format table -o image.html 192.168.1.17:8083/repository/docker-repo/twitter-app:${BUILD_VERSION}"
             }
         }
 
         stage('Docker Upload') {
             steps{
-                sh 'docker push 192.168.1.17:8083/repository/docker-repo/twitter-app:latest'
+                sh "docker push 192.168.1.17:8083/repository/docker-repo/twitter-app:${BUILD_VERSION}"
             }
         }
     }
